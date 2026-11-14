@@ -1,34 +1,31 @@
-import { amenities, gallery } from '../data'
+import { gallery } from '../data'
+import { useI18n } from '../i18n/context'
 import { Dot } from './Dot'
+import { RichText } from './RichText'
 import { SectionHead } from './SectionHead'
 
 export function Structure() {
+  const { t } = useI18n()
   return (
     <section id="estrutura" className="structure">
       <div className="container section">
         <SectionHead
-          title={
-            <>
-              NOSSA
-              <br />
-              <span className="accent-yellow">INFRAESTRUTURA</span>
-            </>
-          }
-          lead="Em frente ao pico: sai da aula, toma uma ducha e descansa sem sair da areia."
+          title={<RichText text={t.structure.title} accentClassName="accent-yellow" />}
+          lead={t.structure.lead}
         />
         <div className="gallery">
-          {gallery.map((g) => (
+          {gallery.map((g, i) => (
             <div
-              key={g.alt}
+              key={g.src}
               className={`gallery__item${g.wide ? ' gallery__item--wide' : ''}`}
               style={{ borderColor: g.border }}
             >
-              <img className="cover-img" src={g.src} alt={g.alt} loading="lazy" />
+              <img className="cover-img" src={g.src} alt={t.structure.gallery[i]} loading="lazy" />
             </div>
           ))}
         </div>
         <div className="chips">
-          {amenities.map((a) => (
+          {t.structure.amenities.map((a) => (
             <span key={a} className="chip">
               <Dot />
               {a}

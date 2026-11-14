@@ -34,62 +34,38 @@ export const images = {
 }
 
 export const navLinks = [
-  { href: '#por-que', label: 'A escola' },
-  { href: '#equipe', label: 'Equipe' },
-  { href: '#estrutura', label: 'Estrutura' },
-  { href: '#aulas', label: 'Aulas' },
-  { href: '#pacotes', label: 'Pacotes' },
-  { href: '#como-chegar', label: 'Como chegar' },
-]
-
-export const tickerItems = ['DESDE 2017', 'TURMAS POR NÍVEL', 'ESTRUTURA NO PICO', 'O SURF É PRA TODOS']
+  { href: '#por-que', key: 'school' },
+  { href: '#equipe', key: 'team' },
+  { href: '#estrutura', key: 'structure' },
+  { href: '#aulas', key: 'classes' },
+  { href: '#pacotes', key: 'pricing' },
+  { href: '#como-chegar', key: 'location' },
+] as const
 
 type Swatch = { bg: string; fg?: string }
-const swatches: Swatch[] = [
+/** Cores dos números dos cards de "Por que", aplicadas em ciclo. */
+export const featureSwatches: Swatch[] = [
   { bg: COLORS.yellow },
   { bg: COLORS.orange },
   { bg: COLORS.red, fg: '#FBF6EC' },
   { bg: COLORS.navy, fg: COLORS.yellow },
 ]
 
-export const features = [
-  { title: 'Instrutores Experientes', text: 'Foco em tornar você um surfista independente, não apenas empurrar nas ondas.' },
-  { title: 'Pranchas para Todos', text: 'Variedade de pranchas para todos os biotipos e níveis de experiência.' },
-  { title: 'Estrutura Completa', text: 'Em frente ao pico: ducha, banheiro, estacionamento e guarda-volumes.' },
-  { title: 'Filmmaker Exclusiva', text: 'Gravação profissional das suas ondas durante a aula.' },
-  { title: 'Agendamento Fácil', text: 'Agende suas aulas de forma prática pelo aplicativo ou WhatsApp.' },
-  { title: 'Turmas por Nível', text: 'Iniciante, intermediário e avançado: cada aluno no ritmo certo.' },
-  { title: 'Surftrips e Eventos', text: 'Integração entre alunos com viagens e eventos especiais.' },
-  { title: 'Diversas Praias', text: 'Intermediário e avançado também em outras praias da região.' },
-].map((f, i) => ({ ...f, swatch: swatches[i % swatches.length] }))
-
+/** `role` aponta para a chave do cargo em `team.roles` nos dicionários (src/i18n). */
 export const team = [
-  { name: 'ALESSANDRA RAMOS (AR)', role: 'Fundadora e Instrutora', photo: equipeAlessandra, bg: COLORS.yellow },
-  { name: 'DANIEL SILVA', role: 'Instrutor e Filmmaker', photo: equipeDaniel, bg: COLORS.orange },
-  { name: 'LYSANDRO', role: 'Instrutor e Atleta', photo: equipeLysandro, bg: COLORS.red },
-  { name: 'GUSTAVO LEÃO', role: 'Instrutor', photo: equipeGustavo, bg: COLORS.navy },
-  { name: 'LUCAS', role: 'Instrutor e Atleta', photo: equipeLucas, bg: COLORS.yellow },
-]
+  { name: 'ALESSANDRA RAMOS (AR)', role: 'founder', photo: equipeAlessandra, bg: COLORS.yellow },
+  { name: 'DANIEL SILVA', role: 'filmmaker', photo: equipeDaniel, bg: COLORS.orange },
+  { name: 'LYSANDRO', role: 'athlete', photo: equipeLysandro, bg: COLORS.red },
+  { name: 'GUSTAVO LEÃO', role: 'instructor', photo: equipeGustavo, bg: COLORS.navy },
+  { name: 'LUCAS', role: 'athlete', photo: equipeLucas, bg: COLORS.yellow },
+] as const
 
+/** O texto alternativo de cada foto fica em `structure.gallery` (mesma ordem). */
 export const gallery = [
-  { src: estrutura1, alt: 'Área externa da escola', border: COLORS.yellow, wide: true },
-  { src: estrutura2, alt: 'Loja e pranchas', border: COLORS.orange },
-  { src: estrutura3, alt: 'Vista do pico', border: COLORS.red },
-  { src: estrutura4, alt: 'Ducha e área de descanso', border: COLORS.cream },
-]
-
-export const amenities = ['Ducha/Banho', 'Banheiro', 'Estacionamento', 'Área de Descanso', 'Guarda-volumes', 'Loja/Produtos']
-
-export const classTypes = [
-  { title: 'Aula Individual', text: 'Atenção exclusiva para evolução acelerada.' },
-  { title: 'Aula em Grupo', text: 'Aprenda com outros alunos em ambiente colaborativo.' },
-  { title: 'Aula para Crianças', text: 'Metodologia lúdica e segura para os pequenos.' },
-  { title: 'Aula para Iniciantes', text: 'Do zero ao surfista com fundamentos sólidos.' },
-  { title: 'Aula Avançada', text: 'Técnicas avançadas para surfistas experientes.' },
-  { title: 'Aulas para Idosos', text: 'Ritmo adaptado e acolhimento especial.' },
-  { title: 'Turmas por Níveis', text: 'Iniciante, intermediário e avançado.' },
-  { title: 'Surf Trips', text: 'Aventuras em diferentes praias da região.' },
-  { title: 'Outras Praias', text: 'Aulas para intermediário/avançado em diversos picos.' },
+  { src: estrutura1, border: COLORS.yellow, wide: true },
+  { src: estrutura2, border: COLORS.orange },
+  { src: estrutura3, border: COLORS.red },
+  { src: estrutura4, border: COLORS.cream },
 ]
 
 export type PlanMode = 'coletivo' | 'individual'
@@ -112,19 +88,13 @@ export const plans: Record<PlanMode, Plan[]> = {
 /** Índice do card em destaque (fundo navy). */
 export const FEATURED_PLAN_INDEX = 2
 
-export const singleLessons = [
-  { label: 'Turma coletiva', price: 65 },
-  { label: 'Turma individual', price: 100 },
+export const singleLessons: { mode: PlanMode; price: number }[] = [
+  { mode: 'coletivo', price: 65 },
+  { mode: 'individual', price: 100 },
 ]
 
-export const rules = [
-  { title: 'Validade:', text: '30 dias consecutivos a partir do pagamento (sem extensão)' },
-  { title: 'Falta:', text: 'aula contabilizada se agendar e não comparecer' },
-  { title: 'Pacotes individuais:', text: 'instrutor fixo' },
-  { title: 'Pacotes não transferíveis:', text: 'uso pessoal e intransferível' },
-]
-
+/** Textos dos horários ficam em `location.schedule` nos dicionários. */
 export const schedule = [
-  { period: 'MANHÃ', days: 'Terça a Domingo', hours: '06h, 07h, 08h, 09h e 10h', bg: COLORS.yellow, fg: COLORS.navy },
-  { period: 'TARDE', days: 'Terça a Sexta', hours: '15h e 16h', bg: COLORS.red, fg: '#fff' },
-]
+  { key: 'morning', bg: COLORS.yellow, fg: COLORS.navy },
+  { key: 'afternoon', bg: COLORS.red, fg: '#fff' },
+] as const

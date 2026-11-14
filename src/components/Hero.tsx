@@ -1,41 +1,37 @@
 import { images, WHATSAPP_URL } from '../data'
+import { useI18n } from '../i18n/context'
+import { RichText } from './RichText'
 
 export function Hero() {
+  const { t } = useI18n()
   return (
     <section id="topo" className="container hero">
       <div className="hero__copy">
-        <span className="eyebrow">ESCOLA DE SURF · COTOVELO / RN · DESDE 2017</span>
+        <span className="eyebrow">{t.hero.eyebrow}</span>
         <h1 className="display hero__title">
-          DROPA
-          <br />
-          COM A
-          <br />
-          <span className="accent">GALERA.</span>
+          <RichText text={t.hero.title} />
         </h1>
-        <p className="hero__text">
-          Aula de surf de frente pro pico, turma separada por nível e instrutor do teu lado. Aqui o objetivo é te
-          formar surfista independente, não só te empurrar na onda.
-        </p>
+        <p className="hero__text">{t.hero.text}</p>
         <div className="hero__actions">
           <a href="#pacotes" className="btn hero__cta">
-            Ver planos e preços
+            {t.hero.ctaPlans}
           </a>
           <a href={WHATSAPP_URL} target="_blank" rel="noreferrer" className="btn btn-outline hero__whats">
-            Chamar no WhatsApp
+            {t.hero.ctaWhatsapp}
           </a>
         </div>
       </div>
       <div className="hero__art">
         <div className="hero__photo">
-          <img className="cover-img" src={images.heroGalera} alt="Galera com as pranchas" />
+          <img className="cover-img" src={images.heroGalera} alt={t.hero.photoAlt} fetchPriority="high" />
         </div>
         <div className="hero__sun" aria-hidden="true" />
         <div className="hero__badge">
-          <strong>+3.000</strong>
+          <strong>{t.hero.badgeValue}</strong>
           <span>
-            ALUNOS
+            {t.hero.badgeLines[0]}
             <br />
-            FORMADOS
+            {t.hero.badgeLines[1]}
           </span>
         </div>
       </div>

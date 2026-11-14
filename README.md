@@ -41,10 +41,16 @@ O site fica disponível em `http://localhost:5173`.
 src/
   main.tsx            ponto de entrada
   App.tsx             monta a página na ordem das seções
-  data.ts             todo o conteúdo do site (textos, planos, equipe, links)
+  data.ts             dados não traduzíveis (imagens, cores, preços, links)
+  i18n/
+    pt.ts             textos em português (idioma padrão, define o formato)
+    en.ts             textos em inglês
+    context.ts        idiomas disponíveis, detecção e hook useI18n
+    I18nProvider.tsx  estado do idioma, <html lang>, <title> e meta description
   index.css           fontes, cores e estilos de cada seção
   components/
-    Header.tsx        logo, menu e seletor de idioma
+    Header.tsx        logo, menu (gaveta no tablet/celular) e seletor de idioma
+    RichText.tsx      renderiza quebras de linha e destaques dos títulos
     Hero.tsx          chamada principal com a foto da galera
     Ticker.tsx        faixa azul com os destaques
     WhyUs.tsx         os 8 motivos para escolher a escola
@@ -66,7 +72,13 @@ public/
 
 ## Editando o conteúdo
 
-Quase tudo o que aparece na tela está em `src/data.ts`. Para mudar um preço, trocar um instrutor ou ajustar um horário, basta editar esse arquivo, sem mexer nos componentes.
+Os textos ficam nos dicionários em `src/i18n/` (`pt.ts` e `en.ts`). Preços, fotos, cores e links ficam em `src/data.ts`. Nenhuma das duas coisas exige mexer nos componentes.
+
+Nos títulos, `\n` quebra a linha e `*palavra*` aplica a cor de destaque:
+
+```ts
+title: 'CONHEÇA\nNOSSA *EQUIPE*',
+```
 
 Alguns exemplos:
 
@@ -86,8 +98,10 @@ export const plans: Record<PlanMode, Plan[]> = {
 Coloque a foto em `src/assets/img/`, importe no topo de `data.ts` e acrescente um item na lista `team`:
 
 ```ts
-{ name: 'NOME', role: 'Instrutor', photo: equipeNovo, bg: COLORS.orange },
+{ name: 'NOME', role: 'instructor', photo: equipeNovo, bg: COLORS.orange },
 ```
+
+`role` é a chave do cargo em `team.roles` nos dicionários.
 
 **Mudar o número do WhatsApp**
 
@@ -111,13 +125,37 @@ Tipografia:
 
 O estilo segue uma linha retrô de praia: bordas grossas, sombras sólidas deslocadas, cantos bem arredondados e um sol listrado em degradê que aparece no hero e na seção de como chegar.
 
+## Internacionalização
+
+O site está em português e inglês, sem bibliotecas externas. O idioma inicial é escolhido nesta ordem:
+
+1. parâmetro `?lang=pt` ou `?lang=en` na URL
+2. escolha anterior do visitante (salva no `localStorage`)
+3. idioma do navegador
+4. português
+
+Ao trocar de idioma, `<html lang>`, o `<title>` e a meta description são atualizados.
+
+**Adicionar um idioma:** crie `src/i18n/es.ts` exportando um objeto do tipo `Dictionary` (o TypeScript aponta qualquer texto faltando) e registre-o em `dictionaries` dentro de `src/i18n/context.ts`. O botão aparece sozinho no seletor.
+
 ## Responsividade
 
-O layout se adapta sem breakpoints fixos na maior parte das seções, usando `grid` com `auto-fit`, `flex-wrap` e tamanhos com `clamp()`. Funciona de celulares pequenos até telas largas, com largura máxima de conteúdo em 1320px.
+Tamanhos fluidos com `clamp()` e grids com `auto-fit`, mais alguns breakpoints:
+
+| Largura | O que muda |
+| ------- | ---------- |
+| ≤ 1180px | menu vira gaveta com botão hambúrguer; seletor de idioma fica fixo na barra |
+| ≤ 980px | "Aulas": foto vira faixa horizontal acima da lista |
+| ≤ 860px | "Regras importantes" em coluna única |
+| ≤ 640px | galeria em 2 colunas; rodapé empilhado |
+| ≤ 520px | equipe em 2 colunas |
+| ≤ 480px | botões principais ocupam a largura toda; callouts empilham a etiqueta |
+| ≤ 400px | header mostra só o logo |
+
+Testado sem rolagem horizontal de 320px a 1440px. Largura máxima de conteúdo: 1320px.
 
 ## Pendências
 
-* O seletor PT/EN alterna apenas o estado visual do botão. A tradução do conteúdo ainda não foi implementada.
 * Os links "Ver perfil" da equipe ainda não levam a nenhuma página.
 * A foto do hero (`hero-galera.jpg`) tem 1,2 MB. Convertê-la para WebP deixaria o carregamento mais rápido.
 
